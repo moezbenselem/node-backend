@@ -42,7 +42,7 @@ sequelize
     console.log('CONNECTED!');
     server = process.env.PORT || 3000;
     
-    app.listen(process.env.PORT || 3000, () => `Server running on port ${port}`);;
+    app.listen(server, () => `Server running on port ${server}`);;
     const io = require('./socket').init(server);
     io.on('connection', socket =>{
       console.log("client connected !!!");
