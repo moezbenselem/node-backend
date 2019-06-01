@@ -1,0 +1,49 @@
+const path = require('path');
+const express = require("express");
+const bodyParser = require("body-parser");
+
+const sequelize = require('./Util/database');
+
+
+const User = require('./models/user');
+const Event = require('./models/event');
+const UserEvent = require('./models/userEvent.js');
+
+const app = express();
+
+const adminRoutes = require('./routes/admin');
+const publicRoutes = require('./routes/public');
+
+
+
+app.use(bodyParser.json());
+
+app.use((req,res,next)=>{
+  res.setHeader('Access-Control-Allow-Origin','*');
+  res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers','Content-Type,Authorization');
+  next();
+});
+
+
+
+app.use('/admin',adminRoutes);
+app.use(publicRoutes);
+//app.use(errorController.get404);
+
+Event.belongsTo(User,{constraint:true,onDelete:'CASCADE'});
+User.hasMany(Event);
+Event.belongsToMany(User, { through: UserEvent });
+let server=null;
+sequelize
+  //.sync({ force: true })
+  .sync()
+  .then(result => {
+    console.log('CONNECTED!');
+    server = app.listen(3300);
+    const io = require('./socket').init(server);
+    io.on('connection', socket =>{
+      console.log("client connected !!!");
+    });
+  });
+
