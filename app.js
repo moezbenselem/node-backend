@@ -34,9 +34,9 @@ app.use(publicRoutes);
 Event.belongsTo(User, { constraint: true, onDelete: 'CASCADE' });
 User.hasMany(Event);
 Event.belongsToMany(User, { through: UserEvent });
-let server = process.env.PORT || 3310;
-console.log('port used : ', server);
-app.listen(server, () => `Server running on port ${server}`);;
+let port = process.env.PORT || 3310;
+console.log('port used : ', port);
+const server = app.listen(port, () => `Server running on port ${port}`);;
 const io = require('./socket').init(server);
 io.on('connection', socket => {
   console.log("client connected !!!");
