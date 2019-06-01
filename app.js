@@ -34,17 +34,18 @@ app.use(publicRoutes);
 Event.belongsTo(User, { constraint: true, onDelete: 'CASCADE' });
 User.hasMany(Event);
 Event.belongsToMany(User, { through: UserEvent });
-let port = process.env.PORT || 3310;
-console.log('port used : ', port);
-const server = app.listen(port, () => `Server running on port ${port}`);;
-const io = require('./socket').init(server);
-io.on('connection', socket => {
-  console.log("client connected !!!");
-});
+
 sequelize
   //.sync({ force: true })
   .sync()
   .then(result => {
     console.log("sequelize success !");
+    let port = process.env.PORT || 3310;
+    console.log('port used : ', port);
+    const server = app.listen(port, () => `Server running on port ${port}`);;
+    const io = require('./socket').init(server);
+    io.on('connection', socket => {
+      console.log("client connected !!!");
+    });
   });
 
