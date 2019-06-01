@@ -18,34 +18,33 @@ const publicRoutes = require('./routes/public');
 
 app.use(bodyParser.json());
 
-app.use((req,res,next)=>{
-  res.setHeader('Access-Control-Allow-Origin','*');
-  res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers','Content-Type,Authorization');
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
   next();
 });
 
 
 
-app.use('/admin',adminRoutes);
+app.use('/admin', adminRoutes);
 app.use(publicRoutes);
 //app.use(errorController.get404);
 
-Event.belongsTo(User,{constraint:true,onDelete:'CASCADE'});
+Event.belongsTo(User, { constraint: true, onDelete: 'CASCADE' });
 User.hasMany(Event);
 Event.belongsToMany(User, { through: UserEvent });
-let server=null;
+let server = process.env.PORT || 3310;
+console.log('port used : ', server);
+app.listen(server, () => `Server running on port ${server}`);;
+const io = require('./socket').init(server);
+io.on('connection', socket => {
+  console.log("client connected !!!");
+});
 sequelize
   //.sync({ force: true })
   .sync()
   .then(result => {
-    console.log('CONNECTED!');
-    server = process.env.PORT || 3310;
-    console.log('port used : ', server);
-    app.listen(server, () => `Server running on port ${server}`);;
-    const io = require('./socket').init(server);
-    io.on('connection', socket =>{
-      console.log("client connected !!!");
-    });
+    console.log("sequelize success !");
   });
 
