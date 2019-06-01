@@ -1,6 +1,6 @@
 const Event = require('../models/event');
 const UserEvent = require('../models/userEvent');
-const Sequelize = require('sequelize');
+const Sequelize = require('Sequelize');
 const Op = Sequelize.Op;
 
 const io = require('../socket');

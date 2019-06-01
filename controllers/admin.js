@@ -1,6 +1,6 @@
 const Event = require('../models/event');
 const User = require('../models/user');
-const Sequelize = require('sequelize');
+const Sequelize = require('Sequelize');
 const io = require('../socket');
 const jwt = require('jsonwebtoken')
 
