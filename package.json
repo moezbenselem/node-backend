@@ -1,9 +1,9 @@
 {
-  "name": "projet-lotfi",
+  "name": "events-backend",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "engines":{
+  "engines": {
     "node": "10.16.0"
   },
   "scripts": {
