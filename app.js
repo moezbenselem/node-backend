@@ -40,8 +40,8 @@ sequelize
   .sync()
   .then(result => {
     console.log('CONNECTED!');
-    server = 3839;
-    
+    server = process.env.PORT || 3310;
+    console.log('port used : ', server);
     app.listen(server, () => `Server running on port ${server}`);;
     const io = require('./socket').init(server);
     io.on('connection', socket =>{
