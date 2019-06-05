@@ -142,6 +142,9 @@ exports.postRemove = (req, res, next) => {
   }).then(events => {
     events[0].destroy();
     console.log('Event Removed !');
+    
+    io.getIO().emit('event', { action: 'remove',success:true });
+
     res.json({
       success:true
     });
