@@ -11,7 +11,7 @@ router.get('/events/:eventId',publicController.getEvent);
 router.get('/events', publicController.getEvents);
 router.post('/myEvents', publicController.getMyEvents);
 
-router.post('/myEvents', publicController.postParticipate);
+router.post('/participate', publicController.postParticipate);
 router.get('/remove/:eventId', publicController.postRemove);
 //router.get('/products/:productId', publicController.getProduct);
 
