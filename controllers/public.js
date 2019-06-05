@@ -135,14 +135,19 @@ exports.postParticipate = (req, res, next) => {
 
 exports.postRemove = (req, res, next) => {
 
-  const eventId = req.params.eventId;
-  const userId = req.session.userId;
-  console.log('In post remove!');
+  const eventId = req.body.eventId;
+  const userId = req.body.userId;
   UserEvent.findAll({
     where: { userId: userId, eventId: eventId }
   }).then(events => {
     events[0].destroy();
     console.log('Event Removed !');
-    res.redirect('/myEvents');
+    res.json({
+      success:true
+    });
+  }).catch(err=>{
+    res.json({
+      success:false
+    });
   });
 }
