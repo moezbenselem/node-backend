@@ -5,61 +5,51 @@ const Op = Sequelize.Op;
 
 const io = require('../socket');
 
-exports.getMyEvents = (req,res,next) =>{
+exports.getMyEvents = (req, res, next) => {
+  const userId = req.body.userId;
 
-  const id = req.params.eventId;
-  
-    if(user =='admin'){
-      UserEvent.findAll({
-        attributes:['eventId'],
-        where :{
-          userId: req.session.userId
+  UserEvent.findAll({
+    attributes: ['eventId'],
+    where: {
+      userId: userId
+    }
+  }).then(events => {
+    const listEvents = [];
+    for (let index = 0; index < events.length; index++) {
+      listEvents.push(events[index].eventId);
+    }
+    console.log(listEvents);
+    return Event.findAll(
+      {
+        where: {
+          id: { [Op.in]: listEvents }
         }
-      }).then(events =>{
-        
-        
-        const listEvents =[];
-        for (let index = 0; index < events.length; index++) {
-          listEvents.push(events[index].eventId);
-            
-        }
-        console.log(listEvents);
-        return Event.findAll( 
-          {
-            where: { 
-                  id: { [Op.in]: listEvents}
-                  }
-          }
-        )
-      })
-      .then(myEvents => {
-        res.render('public/my-events', {
-          events: myEvents,
-          pageTitle: 'My Events',
-          path: '/myEvents',
-          user: user
-        });
-      })
-      .catch(err => {
-        console.log(err);
+      }
+    )
+  })
+    .then(myEvents => {
+      res.json({
+        events:myEvents
       });
-    }
-    else{
-      res.redirect('/admin/login');
-    }
-  
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({
+        error:err
+      });
+    });
 
 };
 
-exports.getEvent = (req,res,next) =>{
+exports.getEvent = (req, res, next) => {
 
   const id = req.params.eventId;
-  
-  Event.findAll( 
+
+  Event.findAll(
     {
-      where: { 
-              id:id
-            }
+      where: {
+        id: id
+      }
     }
   )
     .then(events => {
@@ -77,27 +67,27 @@ exports.getEvent = (req,res,next) =>{
 exports.getEvents = (req, res, next) => {
   const query = req.query.query;
   const date = req.query.date;
-    if (query && date) {
+  if (query && date) {
 
-      Event.findAll( 
-        {
-          where: { 
-                  title: { [Op.like]: [`${query}%`]} ,
-                  date:{ [Op.like]: [`${date}%`]}
-                }
+    Event.findAll(
+      {
+        where: {
+          title: { [Op.like]: [`${query}%`] },
+          date: { [Op.like]: [`${date}%`] }
         }
-      )
-        .then(events => {
-          res.json(events);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-  
-    }
-    else if (query) {
+      }
+    )
+      .then(events => {
+        res.json(events);
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
-    Event.findAll( {where: { title: { [Op.like]: [`${query}%`]} } }
+  }
+  else if (query) {
+
+    Event.findAll({ where: { title: { [Op.like]: [`${query}%`] } } }
     )
       .then(events => {
         res.json(events);
@@ -119,37 +109,40 @@ exports.getEvents = (req, res, next) => {
 };
 
 
-exports.postParticipate = (req,res,next)=>{
+exports.postParticipate = (req, res, next) => {
 
   const eventId = req.body.eventId;
-  const userId = req.session.userId;
+  const userId = req.body.userId;
 
-  if(req.session.isLoggedIn){
-    UserEvent.create({
-      userId:userId,
-      eventId:eventId
-    }).then(result=>{
-      console.log('Event Participated !');
-      res.redirect('/myEvents');
-    }).catch(err=>{
-      res.redirect('/myEvents');
+
+  UserEvent.create({
+    userId: userId,
+    eventId: eventId
+  }).then(result => {
+    console.log('Event Participated !');
+    res.json({
+      success: true,
+      message: null
     });
-  }
-  else{
-    res.redirect('/admin/login');
-  }
-  
+  }).catch(err => {
+    res.json({
+      success: false,
+      message: err
+    });
+  });
+
 }
-  exports.postRemove = (req,res,next)=>{
 
-    const eventId = req.params.eventId;
-    const userId = req.session.userId;
-    console.log('In post remove!');
-    UserEvent.findAll({
-      where:{userId:userId , eventId:eventId}
-    }).then(events=>{
-      events[0].destroy();
-      console.log('Event Removed !');
-      res.redirect('/myEvents');
-    });
-  }
+exports.postRemove = (req, res, next) => {
+
+  const eventId = req.params.eventId;
+  const userId = req.session.userId;
+  console.log('In post remove!');
+  UserEvent.findAll({
+    where: { userId: userId, eventId: eventId }
+  }).then(events => {
+    events[0].destroy();
+    console.log('Event Removed !');
+    res.redirect('/myEvents');
+  });
+}
