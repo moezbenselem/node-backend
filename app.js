@@ -36,7 +36,7 @@ User.hasMany(Event);
 Event.belongsToMany(User, { through: UserEvent });
 
 sequelize
-  //.sync({ force: true })
+  .sync({ force: true })
   .sync()
   .then(result => {
     console.log("sequelize success !");
