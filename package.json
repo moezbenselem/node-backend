@@ -5,7 +5,7 @@
   "main": "app.js",
   "engines": {
     "node": "10.16.0",
-    "npm":"6.9.0"
+    "npm": "6.9.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,25 +15,24 @@
   "author": "Moez Benselem",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^3.0.8",
     "body-parser": "^1.18.3",
-    "bootstrap": "^4.3.1",
+    "bootstrap": "^4.5.2",
     "express": "^4.17.1",
-    "express-session": "^1.16.1",
+    "express-session": "^1.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.5.11",
-    "mysql2": "^1.6.1",
-    "nodemon": "^1.18.11",
-    "passport": "^0.4.0",
+    "mongoose": "^5.10.3",
+    "mysql2": "^1.7.0",
+    "nodemon": "^1.19.4",
+    "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "popups": "^1.1.3",
-    "sequelize-cli": "^5.4.0",
-    "sequelize-mysql-timestamp": "^1.3.0",
-    "socket.io": "^2.2.0",
-    "sequelize": "^5.7.6"
+    "sequelize-cli": "^5.5.1",
+    "sequelize-mysql-timestamp": "^1.4.0",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
-    "ejs": "^2.6.1",
-    "sequelize": "^5.7.6"
+    "ejs": "^2.7.4",
+    "sequelize": "^5.22.3"
   }
 }
