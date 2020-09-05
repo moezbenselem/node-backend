@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
+    "dev": "nodemon app.js",
+    "start": "node app.js",
     "start-server": "node app.js"
   },
   "author": "Moez Benselem",
@@ -23,7 +24,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.3",
     "mysql2": "^1.7.0",
-    "nodemon": "^1.19.4",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "popups": "^1.1.3",
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "ejs": "^2.7.4",
-    "sequelize": "^5.22.3"
+    "sequelize": "^5.22.3",
+    "nodemon": "^1.19.4"
   }
 }
